@@ -102,4 +102,29 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		record[recordIndex]=  tempString;
 		return record;
 	}
+	string* getRecord(string recordId)
+	{
+		ifstream f1(filehandle,ios::in);
+		string *record = new string[countAttributes()];
+		skipLine(f1);
+		bool found = false;
+		while(!f1.eof())
+		{
+			if(f1.peek() == EOF)
+				break;
+			char row[1000];
+			getLine(f1,row);
+			record = parseRecord(row);
+			if(record[0] == recordId)
+			{
+				found = true;
+				break;
+			}
+		}
+		
+		if(found)
+			return record;
+		else
+			return NULL;
+	}
 };
