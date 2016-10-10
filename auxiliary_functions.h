@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
+using namespace std;
 bool isComma(char c)
 {
 	if(c == ',')

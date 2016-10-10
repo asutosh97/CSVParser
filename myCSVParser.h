@@ -4,7 +4,6 @@
 #define APPEND 4
 #define ERROR -1
 #define NOT_CALCULATED -2
-using namespace std;
 class CSVParser
 {
 private:
@@ -15,7 +14,7 @@ private:
 	int noOfRecords;
 public:
 	CSVParser(){
-		filehandle = NULL;
+	//	filehandle = NULL;
 		noOfAttributes = NOT_CALCULATED;
 		noOfRecords = NOT_CALCULATED;
 	}
