@@ -1,3 +1,4 @@
+#include "auxilary_functions.h"
 #define READ 1
 #define WRITE 2
 #define APPEND 4
@@ -52,7 +53,28 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		}
 		return noOfAttributes;
 	}
+	string* parseRecord(string row)
+	{
+		string* record = new string[countAttributes()];
+		char tempString[1000];
+		int rowIndex ,recordIndex,tempIndex;
+		rowIndex = recordIndex = tempIndex = 0;
+		while(!isNewLine(row[rowIndex]))
+		{
+			if(isComma(row[rowIndex]))
+			{
+				endString(tempString,tempIndex);
+				record[recordIndex++] = tempString;
+				truncate(tempIndex);
+			}
+			else
+			{
+				tempString[tempIndex++] = row[rowIndex];
+			}
+			rowIndex++;
+		}
+		endString(tempString,tempIndex);
+		record[recordIndex]=  tempString;
+		return record;
+	}
 };
-
-
-
