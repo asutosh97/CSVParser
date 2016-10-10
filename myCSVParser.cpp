@@ -1,14 +1,20 @@
 #define READ 1
 #define WRITE 2
 #define APPEND 4
-#define ERROR 
-class CSVParser{
+#define ERROR -1
+#define NOT_CALCULATED -2
+using namespace std;
+class CSVParser
+{
+private:
 	string filehandle;
 	int records;
 	int mode;
+	int noOfAttributes;
 public:
 	CSVParser(){
 		filehandle = NULL;
+		noOfAttributes = NOT_CALCULATED;
 	}
 	CSVParser(string filename,int mode)
 	{
@@ -33,18 +39,19 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 	}
 	int countAttributes()
 	{
-		ifstream f1(filehandle,ios::in);
-		int noOfAttributes = 0;
-		char c;
-		do{
-			c = f1.get();
-			if(c == ',')
-				noOfAttributes++;
-		}while(c != '\n');
-		noOfAttributes++;
+		if(noOfAttributes == NOT_CALCULATED)
+		{
+			ifstream f1(filehandle,ios::in);
+			char c;
+			do{
+				c = f1.get();
+				if(c == ',')
+					noOfAttributes++;
+			}while(c != '\n');
+			noOfAttributes++;
+		}
 		return noOfAttributes;
 	}
-
 };
 
 
