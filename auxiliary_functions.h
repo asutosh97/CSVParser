@@ -38,16 +38,20 @@ void getLine(ifstream &f1,char str[])
 {
 	int i = 0;
 	char c;
-	while((c = f1.get()) != '\n')
+	while(!isNewLine(c = f1.get()))
 		str[i++] = c;
 	str[i] = '\n';
 }
 void putLine(ofstream &f2,char str[])
 {
 	int i = 0;
-	while(str[i] != '\n')
+	while(!isNewLine(str[i]))
 		f2.put(str[i++]);
 	str[i] = '\n';
+}
+void skipComma(ifstream &f1)
+{
+	while(!isComma(f1.get()));
 }
 string** dynamic2DString(int row,int column)
 {
