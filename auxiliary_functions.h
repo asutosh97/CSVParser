@@ -42,6 +42,13 @@ void getLine(ifstream &f1,char str[])
 		str[i++] = c;
 	str[i] = '\n';
 }
+void putLine(ofstream &f2,char str[])
+{
+	int i = 0;
+	while(str[i] != '\n')
+		f2.put(str[i++]);
+	str[i] = '\n';
+}
 string** dynamic2DString(int row,int column)
 {
 	string** array = new string*[row];
