@@ -127,4 +127,13 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		else
 			return NULL;
 	}
+	string* getAttributes()
+	{
+		ifstream f1(filehandle,ios::in);
+		string *attributes = new string[countAttributes()];
+		char row[1000];
+		getLine(f1,row);
+		attributes = parseRecord(row);
+		return attributes;
+	}
 };
