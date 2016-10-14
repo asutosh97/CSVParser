@@ -136,4 +136,32 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		attributes = parseRecord(row);
 		return attributes;
 	}
+	bool deleteRecord(string recordID)
+	{
+		ifstream f1(filehandle,ios::in);
+		ofstream f2("temp.csv",ios::out);
+		char row[1000];
+		getLine(f1,row);
+		putLine(f2,row);
+		bool found = false;
+		string *record = new string[countAttributes()];
+		while(!f1.eof())
+		{
+			if(f1.peek() == EOF)
+				break;
+			getLine(f1,row);
+			record = parseRecord(row);
+			if(record[0] == recordID)
+			{
+				found = true;
+				continue;
+			}
+			putLine(f2,row);
+		}
+		f1.close();
+		f2.close();
+		remove(filehandle.c_str());
+		rename("temp.csv",filehandle.c_str());
+		return found;
+	}
 };

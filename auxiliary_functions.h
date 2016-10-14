@@ -47,7 +47,7 @@ void putLine(ofstream &f2,char str[])
 	int i = 0;
 	while(!isNewLine(str[i]))
 		f2.put(str[i++]);
-	str[i] = '\n';
+	f2.put('\n');
 }
 void skipComma(ifstream &f1)
 {
