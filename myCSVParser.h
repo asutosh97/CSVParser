@@ -34,7 +34,7 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		if(noOfRecords == NOT_CALCULATED)
 		{
 			noOfRecords = 0;
-			ifstream f1(filehandle,ios::in);
+			ifstream f1(filehandle.c_str(),ios::in);
 			while(!f1.eof())
 			{
 				if(f1.get() == '\n')
@@ -50,7 +50,7 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		if(noOfAttributes == NOT_CALCULATED)
 		{
 			noOfAttributes = 0;
-			ifstream f1(filehandle,ios::in);
+			ifstream f1(filehandle.c_str(),ios::in);
 			char c;
 			do{
 				c = f1.get();
@@ -63,7 +63,7 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 	}
 	string** getRecords()
 	{
-		ifstream f1(filehandle,ios::in);
+		ifstream f1(filehandle.c_str(),ios::in);
 		string** records = dynamic2DString(countRecords(),countAttributes());
 		int recordsIndex = 0;
 		skipLine(f1);
@@ -104,7 +104,7 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 	}
 	string* getRecord(string recordId)
 	{
-		ifstream f1(filehandle,ios::in);
+		ifstream f1(filehandle.c_str(),ios::in);
 		string *record = new string[countAttributes()];
 		skipLine(f1);
 		bool found = false;
@@ -129,7 +129,7 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 	}
 	string* getAttributes()
 	{
-		ifstream f1(filehandle,ios::in);
+		ifstream f1(filehandle.c_str(),ios::in);
 		string *attributes = new string[countAttributes()];
 		char row[1000];
 		getLine(f1,row);
@@ -138,7 +138,7 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 	}
 	bool deleteRecord(string recordID)
 	{
-		ifstream f1(filehandle,ios::in);
+		ifstream f1(filehandle.c_str(),ios::in);
 		ofstream f2("temp.csv",ios::out);
 		char row[1000];
 		getLine(f1,row);
@@ -154,6 +154,36 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 			if(record[0] == recordID)
 			{
 				found = true;
+				continue;
+			}
+			putLine(f2,row);
+		}
+		f1.close();
+		f2.close();
+		remove(filehandle.c_str());
+		rename("temp.csv",filehandle.c_str());
+		return found;
+	}
+	bool updateRecord(string recordID,string newRow)
+	{
+		//	Take argument the id(primary key) of the record to be modified and the new row 
+		ifstream f1(filehandle.c_str(),ios::in);
+		ofstream f2("temp.csv",ios::out);
+		char row[1000];
+		getLine(f1,row);
+		putLine(f2,row);
+		bool found = false;
+		string *record = new string[countAttributes()];
+		while(!f1.eof())
+		{
+			if(f1.peek() == EOF)
+				break;
+			getLine(f1,row);
+			record = parseRecord(row);
+			if(record[0] == recordID)
+			{
+				found = true;
+				putLine(f2,newRow);
 				continue;
 			}
 			putLine(f2,row);
