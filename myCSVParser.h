@@ -7,7 +7,7 @@
 class CSVParser
 {
 private:
-	string filehandle;
+	std::string filehandle;
 	int records;
 	int mode;
 	int noOfAttributes;
@@ -18,7 +18,7 @@ public:
 		noOfAttributes = NOT_CALCULATED;
 		noOfRecords = NOT_CALCULATED;
 	}
-	CSVParser(string filename,int mode)
+	CSVParser(std::string filename,int mode)
 	{
 		this->filehandle = filename + ".csv";
 		this->mode = mode;
@@ -34,7 +34,7 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		if(noOfRecords == NOT_CALCULATED)
 		{
 			noOfRecords = 0;
-			ifstream f1(filehandle.c_str(),ios::in);
+			std::ifstream f1(filehandle.c_str(),std::ios::in);
 			while(!f1.eof())
 			{
 				if(f1.get() == '\n')
@@ -50,7 +50,7 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		if(noOfAttributes == NOT_CALCULATED)
 		{
 			noOfAttributes = 0;
-			ifstream f1(filehandle.c_str(),ios::in);
+			std::ifstream f1(filehandle.c_str(),std::ios::in);
 			char c;
 			do{
 				c = f1.get();
@@ -61,16 +61,17 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		}
 		return noOfAttributes;
 	}
-	string** getRecords()
+	std::string** getRecords()
 	{
-		ifstream f1(filehandle.c_str(),ios::in);
-		string** records = dynamic2DString(countRecords(),countAttributes());
+		std::ifstream f1(filehandle.c_str(),std::ios::in);
+		std::string** records = dynamic2DString(countRecords(),countAttributes());
 		int recordsIndex = 0;
 		skipLine(f1);
-		while(!f1.eof())
+		while(f1.peek() != EOF)
+	//		while(!f1.eof())
 		{
-			if(f1.peek() == EOF)
-				break;
+		//	if(f1.peek() == EOF)
+		//		break;
 			char row[1000];
 			getLine(f1,row);
 			records[recordsIndex++] = parseRecord(row);
@@ -78,9 +79,9 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		f1.close();
 		return records;
 	}
-	string* parseRecord(string row)
+	std::string* parseRecord(std::string row)
 	{
-		string* record = new string[countAttributes()];
+		std::string* record = new std::string[countAttributes()];
 		char tempString[1000];
 		int rowIndex ,recordIndex,tempIndex;
 		rowIndex = recordIndex = tempIndex = 0;
@@ -102,16 +103,17 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		record[recordIndex]=  tempString;
 		return record;
 	}
-	string* getRecord(string recordId)
+	std::string* getRecord(std::string recordId)
 	{
-		ifstream f1(filehandle.c_str(),ios::in);
-		string *record = new string[countAttributes()];
+		std::ifstream f1(filehandle.c_str(),std::ios::in);
+		std::string *record = new std::string[countAttributes()];
 		skipLine(f1);
 		bool found = false;
-		while(!f1.eof())
+		while(f1.peek() != EOF)
+		//	while(!f1.eof())
 		{
-			if(f1.peek() == EOF)
-				break;
+		//	if(f1.peek() == EOF)
+		//		break;
 			char row[1000];
 			getLine(f1,row);
 			record = parseRecord(row);
@@ -127,28 +129,29 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		else
 			return NULL;
 	}
-	string* getAttributes()
+	std::string* getAttributes()
 	{
-		ifstream f1(filehandle.c_str(),ios::in);
-		string *attributes = new string[countAttributes()];
+		std::ifstream f1(filehandle.c_str(),std::ios::in);
+		std::string *attributes = new std::string[countAttributes()];
 		char row[1000];
 		getLine(f1,row);
 		attributes = parseRecord(row);
 		return attributes;
 	}
-	bool deleteRecord(string recordID)
+	bool deleteRecord(std::string recordID)
 	{
-		ifstream f1(filehandle.c_str(),ios::in);
-		ofstream f2("temp.csv",ios::out);
+		std::ifstream f1(filehandle.c_str(),std::ios::in);
+		std::ofstream f2("temp.csv",std::ios::out);
 		char row[1000];
 		getLine(f1,row);
 		putLine(f2,row);
 		bool found = false;
-		string *record = new string[countAttributes()];
-		while(!f1.eof())
+		std::string *record = new std::string[countAttributes()];
+		while(f1.peek() != EOF)
+		//	while(!f1.eof())
 		{
-			if(f1.peek() == EOF)
-				break;
+		//	if(f1.peek() == EOF)
+		//		break;
 			getLine(f1,row);
 			record = parseRecord(row);
 			if(record[0] == recordID)
@@ -164,20 +167,21 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		rename("temp.csv",filehandle.c_str());
 		return found;
 	}
-	bool updateRecord(string recordID,string newRow)
+	bool updateRecord(std::string recordID,char newRow[])
 	{
 		//	Take argument the id(primary key) of the record to be modified and the new row 
-		ifstream f1(filehandle.c_str(),ios::in);
-		ofstream f2("temp.csv",ios::out);
+		std::ifstream f1(filehandle.c_str(),std::ios::in);
+		std::ofstream f2("temp.csv",std::ios::out);
 		char row[1000];
 		getLine(f1,row);
 		putLine(f2,row);
 		bool found = false;
-		string *record = new string[countAttributes()];
-		while(!f1.eof())
+		std::string *record = new std::string[countAttributes()];
+		while(f1.peek() != EOF)
+		//	while(!f1.eof())
 		{
-			if(f1.peek() == EOF)
-				break;
+		//	if(f1.peek() == EOF)
+		//		break;
 			getLine(f1,row);
 			record = parseRecord(row);
 			if(record[0] == recordID)

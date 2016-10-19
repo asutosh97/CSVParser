@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
-using namespace std;
+//using namespace std;
 bool isComma(char c)
 {
 	if(c == ',')
@@ -29,12 +29,12 @@ void truncate(int &x)
 	x = 0;
 }
 
-void skipLine(ifstream &f1)
+void skipLine(std::ifstream &f1)
 {
 	while(f1.get() != '\n');
 }
 
-void getLine(ifstream &f1,char str[])
+void getLine(std::ifstream &f1,char str[])
 {
 	int i = 0;
 	char c;
@@ -42,22 +42,22 @@ void getLine(ifstream &f1,char str[])
 		str[i++] = c;
 	str[i] = '\n';
 }
-void putLine(ofstream &f2,char str[])
+void putLine(std::ofstream &f2,char str[])
 {
 	int i = 0;
 	while(!isNewLine(str[i]))
 		f2.put(str[i++]);
 	f2.put('\n');
 }
-void skipComma(ifstream &f1)
+void skipComma(std::ifstream &f1)
 {
 	while(!isComma(f1.get()));
 }
-string** dynamic2DString(int row,int column)
+std::string** dynamic2DString(int row,int column)
 {
-	string** array = new string*[row];
+	std::string** array = new std::string*[row];
 	int i;
 	for(i = 0;i < column;i++)
-		array[i] = new string[column];
+		array[i] = new std::string[column];
 	return array;
 }
