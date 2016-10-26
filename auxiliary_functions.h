@@ -1,3 +1,5 @@
+#ifndef _AUXILIARY_FUNCTIONS_H  
+#define _AUXILIARY_FUNCTIONS_H
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -61,3 +63,5 @@ std::string** dynamic2DString(int row,int column)
 		array[i] = new std::string[column];
 	return array;
 }
+
+#endif /* _AUXILIARY_FUNCTIONS_H */

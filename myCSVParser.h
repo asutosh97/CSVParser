@@ -1,3 +1,5 @@
+#ifndef _CSVPARSER_H  
+#define _CSVPARSER_H
 #include "auxiliary_functions.h"
 #define READ 1
 #define WRITE 2
@@ -199,3 +201,5 @@ i.e, if user wants to add or delete record, check if mode is write or append, ot
 		return found;
 	}
 };
+
+#endif /* _CSVPARSER_H */
